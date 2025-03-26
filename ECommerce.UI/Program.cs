@@ -1,16 +1,8 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Reflection.Metadata;
-using ECommerce.Application.DTOs;
-using ECommerce.Application.Extensions;
-using ECommerce.Application.Interfaces;
+﻿
 using ECommerce.Application.Services;
 using ECommerce.Domain.Entities;
-using ECommerce.Domain.Interfaces;
 using ECommerce.Infrastructure.EfCore;
 using ECommerce.Infrastructure.EfCore.Context;
-using Microsoft.Identity.Client;
 using Microsoft.IdentityModel.Tokens;
 
 namespace ECommerce.UI;
@@ -120,7 +112,6 @@ public partial class Program
                         {
                             while (true)
                             {
-
                                 CustomerManager customerManager = new CustomerManager();
                                 customerManager.SetUserId(userId);
                                 customerManager.ShowCommands();

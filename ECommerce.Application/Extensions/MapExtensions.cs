@@ -42,7 +42,9 @@ public static class MapExtensions
                 Id = product.Id,
                 Name = product.Name,
                 Price = product.Price,
-                CategoryName = product.Category?.Name
+                CategoryName = product.Category?.Name,
+                FeedBack= product.FeedBack,
+
             };
         }
         else 

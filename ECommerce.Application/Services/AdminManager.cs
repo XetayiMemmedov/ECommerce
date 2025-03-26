@@ -539,13 +539,13 @@ public class AdminManager
                                 ShowCategories();
                                 Console.Write("Enter Category id:");
                                 string? categoryidinput = Console.ReadLine();
-                                if (categoryidinput.IsNullOrEmpty())
+                                if (!categoryidinput.IsNullOrEmpty())
                                 {
                                     if (int.TryParse(categoryidinput, out int categoryid))
                                     {
                                         Console.Write("Enter product price:");
                                         string? productpriceinput = Console.ReadLine();
-                                        if (productpriceinput.IsNullOrEmpty())
+                                        if (!productpriceinput.IsNullOrEmpty())
                                         {
                                             if (Decimal.TryParse(productpriceinput, out decimal productprice))
                                             {

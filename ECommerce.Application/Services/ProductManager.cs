@@ -50,7 +50,9 @@ namespace ECommerce.Application.Services
                     Id = item.Id,
                     Name = item.Name,
                     Price = item.Price,
-                    CategoryName = item.Category.Name
+                    CategoryName = item.Category.Name,
+                    FeedBack = item.FeedBack,
+                    
                 });
             }
 
