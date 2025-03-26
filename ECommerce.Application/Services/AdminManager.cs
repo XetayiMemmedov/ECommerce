@@ -28,18 +28,6 @@ public class AdminManager
     private readonly IOrderService orderService;
     private readonly IUserRepository userRepository;
     private readonly IUserService userService;
-    static void SuccessOperation(string message)
-    {
-        Console.ForegroundColor = ConsoleColor.Green;
-        Console.WriteLine(message);
-        Console.ResetColor();
-    }
-    static void ErrorOperation(string message)
-    {
-        Console.ForegroundColor = ConsoleColor.Red;
-        Console.WriteLine(message);
-        Console.ResetColor();
-    }
     public AdminManager()
     {
         AppDbContext appDbContext = new AppDbContext();
@@ -173,7 +161,7 @@ public class AdminManager
                                         var updatedto = MapExtensions.ToOrderUpdateDto(item);
                                         orderService.Update(updatedto);
                                     }
-                                    SuccessOperation($"Status of all the given orders are changed to {status}.");
+                                    MessageHelper.SuccessOperation($"Status of all the given orders are changed to {status}.");
                                 }
                                 else
                                 {
@@ -186,45 +174,45 @@ public class AdminManager
                                             var updatedto = MapExtensions.ToOrderUpdateDto(item);
                                             orderService.Update(updatedto);
                                             isExist = true;
-                                            SuccessOperation($"The order with ID {item.Id} has been updated to {status}!");
+                                            MessageHelper.SuccessOperation($"The order with ID {item.Id} has been updated to {status}!");
                                             break;
                                         }
                                     }
 
                                     if (!isExist)
                                     {
-                                        ErrorOperation($"No order found with ID {confirmationnumber}.");
+                                        MessageHelper.ErrorOperation($"No order found with ID {confirmationnumber}.");
                                     }
                                 }
                             }
                             else
                             {
-                                ErrorOperation("Invalid input for order selection!");
+                                MessageHelper.ErrorOperation("Invalid input for order selection!");
                             }
                         }
                         else
                         {
-                            ErrorOperation($"{statusnumber} is not a valid status number.");
+                            MessageHelper.ErrorOperation($"{statusnumber} is not a valid status number.");
                         }
                     }
                     else
                     {
-                        ErrorOperation("Invalid input for status change.");
+                        MessageHelper.ErrorOperation("Invalid input for status change.");
                     }
                 }
                 else
                 {
-                    ErrorOperation("No orders found with the selected status.");
+                    MessageHelper.ErrorOperation("No orders found with the selected status.");
                 }
             }
             else
             {
-                ErrorOperation($"{statusnumber} is not a valid status in the StatusType enum.");
+                MessageHelper.ErrorOperation($"{statusnumber} is not a valid status in the StatusType enum.");
             }
         }
         else
         {
-            ErrorOperation("Invalid status number entered.");
+            MessageHelper.ErrorOperation("Invalid status number entered.");
         }
     }
 
@@ -253,7 +241,7 @@ public class AdminManager
                 string cpassword = userService.GetPasswordInput("Confirm Password:");
                 if (password != cpassword)
                 {
-                    ErrorOperation("Password does not match!");
+                    MessageHelper.ErrorOperation("Password does not match!");
                     return;
                 }
                 else
@@ -277,11 +265,11 @@ public class AdminManager
                 Role = usertype,
                 Email = email
             });
-            SuccessOperation($"{username} is successfully added as {usertype}!");
+            MessageHelper.SuccessOperation($"{username} is successfully added as {usertype}!");
         }
         else
         {
-            ErrorOperation("Username must not be empty!");
+            MessageHelper.ErrorOperation("Username must not be empty!");
         }
     }
     public void UpdateUser()
@@ -310,7 +298,7 @@ public class AdminManager
                             string cpassword = userService.GetPasswordInput("Confirm Password:");
                             if (password != cpassword)
                             {
-                                ErrorOperation("Password does not match!");
+                                MessageHelper.ErrorOperation("Password does not match!");
                                 return;
                             }
                             else
@@ -335,7 +323,7 @@ public class AdminManager
                             Email = email,
                             Id = userid,
                         });
-                        SuccessOperation($"{username} is successfully updated!");
+                        MessageHelper.SuccessOperation($"{username} is successfully updated!");
                         break;
                     }
 
@@ -344,7 +332,7 @@ public class AdminManager
             }
             else
             {
-                ErrorOperation("Invalid id!");
+                MessageHelper.ErrorOperation("Invalid id!");
                 return;
             }
         }
@@ -368,7 +356,7 @@ public class AdminManager
                     if (users[i].Id == userid)
                     {
                         userService.Remove(userid);
-                        SuccessOperation($"{users[i].Name} is scuccessfully removed!");
+                        MessageHelper.SuccessOperation($"{users[i].Name} is scuccessfully removed!");
                         return;
                     }
                 }
@@ -376,7 +364,7 @@ public class AdminManager
             }
             else
             {
-                ErrorOperation("Invalid user id");
+                MessageHelper.ErrorOperation("Invalid user id");
             }
         }
         
@@ -391,11 +379,11 @@ public class AdminManager
             {
                 Name = categoryname
             });
-            SuccessOperation($"Category {categoryname} is successfully added!");
+            MessageHelper.SuccessOperation($"Category {categoryname} is successfully added!");
         }
         else
         {
-            ErrorOperation("Invalid input");
+            MessageHelper.ErrorOperation("Invalid input");
         }
        
     }
@@ -428,23 +416,23 @@ public class AdminManager
                                     Name = categoryname,
                                     Id = categoryid
                                 });
-                                SuccessOperation($"Category {categoryname} is successfully added!");
+                                MessageHelper.SuccessOperation($"Category {categoryname} is successfully added!");
                                 return;
                             }
                             else
                             {
-                                ErrorOperation("Invalid input for category name!");
+                                MessageHelper.ErrorOperation("Invalid input for category name!");
                             }
                         }
                     }
 
                 }
-                ErrorOperation("Invalid category id!");
+                MessageHelper.ErrorOperation("Invalid category id!");
 
             }
             else
             {
-                ErrorOperation("Invalid input for category id!");
+                MessageHelper.ErrorOperation("Invalid input for category id!");
             }
         }
         
@@ -569,12 +557,12 @@ public class AdminManager
                                                     Price = productprice
 
                                                 });
-                                                SuccessOperation($"Product {productname} is successfully updated!");
+                                                MessageHelper.SuccessOperation($"Product {productname} is successfully updated!");
                                                 return;
                                             }
                                             else
                                             {
-                                                ErrorOperation("Invalid input!");
+                                                MessageHelper.ErrorOperation("Invalid input!");
                                             }
 
                                         }
@@ -582,22 +570,22 @@ public class AdminManager
                                 }
                                 else
                                 {
-                                    ErrorOperation("Invalid category id!");
+                                    MessageHelper.ErrorOperation("Invalid category id!");
                                 }
                             }
                             else
                             {
-                                ErrorOperation("Invalid input!");
+                                MessageHelper.ErrorOperation("Invalid input!");
                             }
                         }
                     }
                 }
 
-                ErrorOperation("Invalid product id!");
+                MessageHelper.ErrorOperation("Invalid product id!");
             }
             else
             {
-                ErrorOperation("Invalid input for product id!");
+                MessageHelper.ErrorOperation("Invalid input for product id!");
             }
         }
     }
@@ -619,15 +607,15 @@ public class AdminManager
                     if (products[i].Id == productid)
                     {
                         productService.Remove(productid);
-                        SuccessOperation($"{products[i].Name} is successfully removed!");
+                        MessageHelper.SuccessOperation($"{products[i].Name} is successfully removed!");
                         return;
                     }
                 }
-                ErrorOperation("Invalid product id!");
+                MessageHelper.ErrorOperation("Invalid product id!");
             }
             else
             {
-                ErrorOperation("Invalid input for product id!");
+                MessageHelper.ErrorOperation("Invalid input for product id!");
 
             }
 

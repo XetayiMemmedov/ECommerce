@@ -43,7 +43,7 @@ public partial class Program
                     if (user != null)
                     {
                         var status = user.Role;
-                        SuccessOperation($"Welcome {status} {user.Name}");
+                        MessageHelper.SuccessOperation($"Welcome {status} {user.Name}");
                         userId = user.Id;
                         isLoggedIn = true;
                         isexit = false;
@@ -106,7 +106,7 @@ public partial class Program
                                         break;
 
                                     default:
-                                        ErrorOperation("Invalid command!");
+                                        MessageHelper.ErrorOperation("Invalid command!");
                                         break;
                                 }
                                 if (!isLoggedIn)
@@ -165,7 +165,7 @@ public partial class Program
                                         isexit=true;
                                         break;
                                     default:
-                                        ErrorOperation("Invalid command!");
+                                        MessageHelper.ErrorOperation("Invalid command!");
                                         break;
                                 }
                                 if (!isLoggedIn)
@@ -177,28 +177,17 @@ public partial class Program
                     }
                     else
                     {
-                        ErrorOperation("Invalid username or password!");
+                        MessageHelper.ErrorOperation("Invalid username or password!");
                     }
                 }
                 else
                 {
-                    ErrorOperation("Invalid username or password!");
+                    MessageHelper.ErrorOperation("Invalid username or password!");
                 }
             }
             
         }
     }
-    static void SuccessOperation(string message)
-    {
-        Console.ForegroundColor = ConsoleColor.Green;
-        Console.WriteLine(message);
-        Console.ResetColor();
-    }
-    static void ErrorOperation(string message)
-    {
-        Console.ForegroundColor = ConsoleColor.Red;
-        Console.WriteLine(message);
-        Console.ResetColor();
-    }
+ 
 
 }

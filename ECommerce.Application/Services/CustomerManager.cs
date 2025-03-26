@@ -33,18 +33,7 @@ namespace ECommerce.Application.Services
 
         private int _userId;
 
-        static void SuccessOperation(string message)
-        {
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine(message);
-            Console.ResetColor();
-        }
-        static void ErrorOperation(string message)
-        {
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine(message);
-            Console.ResetColor();
-        }
+       
 
         public CustomerManager()
         {
@@ -131,12 +120,12 @@ namespace ECommerce.Application.Services
                 }
                 else
                 {
-                    ErrorOperation("No product in this category");
+                    MessageHelper.ErrorOperation("No product in this category");
                 }
             }
             else
             {
-                ErrorOperation("Invalid input for category id");
+                MessageHelper.ErrorOperation("Invalid input for category id");
             }
         }
         public void ShowBasket()
@@ -154,7 +143,7 @@ namespace ECommerce.Application.Services
             }
             else
             {
-                ErrorOperation("Basket is empty!");
+                MessageHelper.ErrorOperation("Basket is empty!");
             }
 
         }
@@ -177,12 +166,12 @@ namespace ECommerce.Application.Services
                 }
                 else
                 {
-                    ErrorOperation("Basket is empty!");
+                    MessageHelper.ErrorOperation("Basket is empty!");
                 }
             }
             else
             {
-                ErrorOperation("Basket is empty!");
+                MessageHelper.ErrorOperation("Basket is empty!");
             }
         }
         public void AddToBasket()
@@ -210,7 +199,7 @@ namespace ECommerce.Application.Services
                                 {
                                     var order = basketManager.ConfirmBasket(_userId);
                                     Console.WriteLine();
-                                    SuccessOperation($"Your order has been placed for the following items:");
+                                    MessageHelper.SuccessOperation($"Your order has been placed for the following items:");
                                     int num = 1;
                                     Console.WriteLine(new string('-', 113));
                                     Console.WriteLine($"{"N№",-3}{"Product name",-30}{"Price",-10}{"Quantity",-12}{"Order date",-22}{"Order status",-12}{"Delivery date",-22}");
@@ -232,22 +221,22 @@ namespace ECommerce.Application.Services
                             }
                             else
                             {
-                                ErrorOperation("Invalid choise!");
+                                MessageHelper.ErrorOperation("Invalid choise!");
                             }
                         }
                         else
                         {
-                            ErrorOperation("Invalid quantity input!");
+                            MessageHelper.ErrorOperation("Invalid quantity input!");
                         }
                     }
                     else
                     {
-                        ErrorOperation("Product not found!");
+                        MessageHelper.ErrorOperation("Product not found!");
                     }
                 }
                 else
                 {
-                    ErrorOperation("Invalid product id!");
+                    MessageHelper.ErrorOperation("Invalid product id!");
                 }
             }
 
@@ -269,7 +258,7 @@ namespace ECommerce.Application.Services
                     }
                     else
                     {
-                        ErrorOperation("Invalid id!");
+                        MessageHelper.ErrorOperation("Invalid id!");
                     }
                 }
                 else if(comnum == 2)
@@ -280,7 +269,7 @@ namespace ECommerce.Application.Services
             }
             else
             {
-                ErrorOperation("Invalid command!");
+                MessageHelper.ErrorOperation("Invalid command!");
             }
         }
         public void ShowOrders()
@@ -316,7 +305,7 @@ namespace ECommerce.Application.Services
             }
             else
             {
-                ErrorOperation("No order found!");
+                MessageHelper.ErrorOperation("No order found!");
             }
         }
 
@@ -340,21 +329,21 @@ namespace ECommerce.Application.Services
                         order.OrderStatus = StatusType.Cancelled;
                         var orderupdatedto = MapExtensions.ToOrderUpdateDto(order);
                         orderService.Update(orderupdatedto);
-                        SuccessOperation("Your order calcelled!");
+                        MessageHelper.SuccessOperation("Your order calcelled!");
                     }
                     else
                     {
-                        ErrorOperation("Invalid order id!");
+                        MessageHelper.ErrorOperation("Invalid order id!");
                     }
                 }
                 else
                 {
-                    ErrorOperation("Invalid order id!");
+                    MessageHelper.ErrorOperation("Invalid order id!");
                 }
             }
             else
             {
-                ErrorOperation("No order found to cancel!");
+                MessageHelper.ErrorOperation("No order found to cancel!");
             }
         }
 
@@ -385,7 +374,7 @@ namespace ECommerce.Application.Services
 
             if (!isexist)
             {
-                ErrorOperation("No product found in your orders to feedback!");
+                MessageHelper.ErrorOperation("No product found in your orders to feedback!");
                 return;
             }
 
@@ -461,7 +450,7 @@ namespace ECommerce.Application.Services
 
                                 item.UserFeedBacks.Add(userfeedback);
 
-                                SuccessOperation($"Your {productfeedback}* feedback is set!");
+                                MessageHelper.SuccessOperation($"Your {productfeedback}* feedback is set!");
                                 isexist = true;
                                 break;
                             }
@@ -475,13 +464,13 @@ namespace ECommerce.Application.Services
                 }
                 if (!isexist)
                 {
-                    ErrorOperation("No product found in your orders to give feedback on!");
+                    MessageHelper.ErrorOperation("No product found in your orders to give feedback on!");
                 }
             }
             
             else
             {
-                ErrorOperation("Invalid product id!");
+                MessageHelper.ErrorOperation("Invalid product id!");
             }
         }
 
@@ -533,7 +522,7 @@ namespace ECommerce.Application.Services
                             var updatedto = MapExtensions.ToOrderUpdateDto(item);
                             orderService.Update(updatedto);
                         }
-                        SuccessOperation("All products of on the way orders are delivered!");
+                        MessageHelper.SuccessOperation("All products of on the way orders are delivered!");
                     }
                     else if (confirmationnumber > 0)
                     {
@@ -546,19 +535,19 @@ namespace ECommerce.Application.Services
                                 var updatedto = MapExtensions.ToOrderUpdateDto(item);
                                 orderService.Update(updatedto);
                                 isexist = true;
-                                SuccessOperation($"All products of the order with {item.Id} id is delivered!");
+                                MessageHelper.SuccessOperation($"All products of the order with {item.Id} id is delivered!");
                             }
                         }
                         if (!isexist)
                         {
-                            ErrorOperation($"No order found with {confirmationnumber} id!");
+                            MessageHelper.ErrorOperation($"No order found with {confirmationnumber} id!");
                         }
                     }
                 }
             }
             else
             {
-                ErrorOperation("No order (on the way) found");
+                MessageHelper.ErrorOperation("No order (on the way) found");
             }
         }
 
