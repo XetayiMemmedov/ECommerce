@@ -95,10 +95,15 @@ public class AdminManager
 
     public void ShowProducts()
     {
+        Console.WriteLine();
+        Console.WriteLine(new string('-', 80));
+        Console.WriteLine($"{"Id",-5}{"Product name",-30}{"Price",-10}{"Category",-30}{"FeedBack",-12}");
         foreach (var product in productService.GetAll())
         {
-            Console.WriteLine($"{product.Id}. {product.Name} {product.Price} {product.CategoryName}");
+            Console.WriteLine(); Console.WriteLine($"{product.Id,-5}{product.Name,-30}{product.Price,-10}{product.CategoryName,-30}{product.FeedBack,-12}");
         }
+        Console.WriteLine(new string('-', 80));
+        Console.WriteLine();
     }
     public void ConfirmOrder()
     {
