@@ -28,7 +28,18 @@ public class AdminManager
     private readonly IOrderService orderService;
     private readonly IUserRepository userRepository;
     private readonly IUserService userService;
-    
+    static void SuccessOperation(string message)
+    {
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.WriteLine(message);
+        Console.ResetColor();
+    }
+    static void ErrorOperation(string message)
+    {
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine(message);
+        Console.ResetColor();
+    }
     public AdminManager()
     {
         AppDbContext appDbContext = new AppDbContext();
@@ -162,7 +173,7 @@ public class AdminManager
                                         var updatedto = MapExtensions.ToOrderUpdateDto(item);
                                         orderService.Update(updatedto);
                                     }
-                                    Console.WriteLine($"Status of all the given orders are changed to {status}.");
+                                    SuccessOperation($"Status of all the given orders are changed to {status}.");
                                 }
                                 else
                                 {
@@ -175,45 +186,45 @@ public class AdminManager
                                             var updatedto = MapExtensions.ToOrderUpdateDto(item);
                                             orderService.Update(updatedto);
                                             isExist = true;
-                                            Console.WriteLine($"The order with ID {item.Id} has been updated to {status}!");
+                                            SuccessOperation($"The order with ID {item.Id} has been updated to {status}!");
                                             break;
                                         }
                                     }
 
                                     if (!isExist)
                                     {
-                                        Console.WriteLine($"No order found with ID {confirmationnumber}.");
+                                        ErrorOperation($"No order found with ID {confirmationnumber}.");
                                     }
                                 }
                             }
                             else
                             {
-                                Console.WriteLine("Invalid input for order selection!");
+                                ErrorOperation("Invalid input for order selection!");
                             }
                         }
                         else
                         {
-                            Console.WriteLine($"{statusnumber} is not a valid status number.");
+                            ErrorOperation($"{statusnumber} is not a valid status number.");
                         }
                     }
                     else
                     {
-                        Console.WriteLine("Invalid input for status change.");
+                        ErrorOperation("Invalid input for status change.");
                     }
                 }
                 else
                 {
-                    Console.WriteLine("No orders found with the selected status.");
+                    ErrorOperation("No orders found with the selected status.");
                 }
             }
             else
             {
-                Console.WriteLine($"{statusnumber} is not a valid status in the StatusType enum.");
+                ErrorOperation($"{statusnumber} is not a valid status in the StatusType enum.");
             }
         }
         else
         {
-            Console.WriteLine("Invalid status number entered.");
+            ErrorOperation("Invalid status number entered.");
         }
     }
 
@@ -242,7 +253,7 @@ public class AdminManager
                 string cpassword = userService.GetPasswordInput("Confirm Password:");
                 if (password != cpassword)
                 {
-                    Console.WriteLine("Password does not match!");
+                    ErrorOperation("Password does not match!");
                     return;
                 }
                 else
@@ -266,11 +277,11 @@ public class AdminManager
                 Role = usertype,
                 Email = email
             });
-            Console.WriteLine($"{username} is successfully added as {usertype}!");
+            SuccessOperation($"{username} is successfully added as {usertype}!");
         }
         else
         {
-            Console.WriteLine("Username must not be empty!");
+            ErrorOperation("Username must not be empty!");
         }
     }
     public void UpdateUser()
@@ -299,7 +310,7 @@ public class AdminManager
                             string cpassword = userService.GetPasswordInput("Confirm Password:");
                             if (password != cpassword)
                             {
-                                Console.WriteLine("Password does not match!");
+                                ErrorOperation("Password does not match!");
                                 return;
                             }
                             else
@@ -324,7 +335,7 @@ public class AdminManager
                             Email = email,
                             Id = userid,
                         });
-                        Console.WriteLine($"{username} is successfully updated!");
+                        SuccessOperation($"{username} is successfully updated!");
                         break;
                     }
 
@@ -333,7 +344,7 @@ public class AdminManager
             }
             else
             {
-                Console.WriteLine("Invalid id!");
+                ErrorOperation("Invalid id!");
                 return;
             }
         }
@@ -357,7 +368,7 @@ public class AdminManager
                     if (users[i].Id == userid)
                     {
                         userService.Remove(userid);
-                        Console.WriteLine($"{users[i].Name} is scuccessfully removed!");
+                        SuccessOperation($"{users[i].Name} is scuccessfully removed!");
                         return;
                     }
                 }
@@ -365,7 +376,7 @@ public class AdminManager
             }
             else
             {
-                Console.WriteLine("Invalid user id");
+                ErrorOperation("Invalid user id");
             }
         }
         
@@ -380,11 +391,11 @@ public class AdminManager
             {
                 Name = categoryname
             });
-            Console.WriteLine($"Category {categoryname} is successfully added!");
+            SuccessOperation($"Category {categoryname} is successfully added!");
         }
         else
         {
-            Console.WriteLine("Invalid input");
+            ErrorOperation("Invalid input");
         }
        
     }
@@ -417,23 +428,23 @@ public class AdminManager
                                     Name = categoryname,
                                     Id = categoryid
                                 });
-                                Console.WriteLine($"Category {categoryname} is successfully added!");
+                                SuccessOperation($"Category {categoryname} is successfully added!");
                                 return;
                             }
                             else
                             {
-                                Console.WriteLine("Invalid input for category name!");
+                                ErrorOperation("Invalid input for category name!");
                             }
                         }
                     }
 
                 }
-                Console.WriteLine("Invalid category id!");
+                ErrorOperation("Invalid category id!");
 
             }
             else
             {
-                Console.WriteLine("Invalid input for category id!");
+                ErrorOperation("Invalid input for category id!");
             }
         }
         
@@ -558,12 +569,12 @@ public class AdminManager
                                                     Price = productprice
 
                                                 });
-                                                Console.WriteLine($"Product {productname} is successfully updated!");
+                                                SuccessOperation($"Product {productname} is successfully updated!");
                                                 return;
                                             }
                                             else
                                             {
-                                                Console.WriteLine("Invalid input!");
+                                                ErrorOperation("Invalid input!");
                                             }
 
                                         }
@@ -571,22 +582,22 @@ public class AdminManager
                                 }
                                 else
                                 {
-                                    Console.WriteLine("Invalid category id!");
+                                    ErrorOperation("Invalid category id!");
                                 }
                             }
                             else
                             {
-                                Console.WriteLine("Invalid input!");
+                                ErrorOperation("Invalid input!");
                             }
                         }
                     }
                 }
 
-                Console.WriteLine("Invalid product id!");
+                ErrorOperation("Invalid product id!");
             }
             else
             {
-                Console.WriteLine("Invalid input for product id!");
+                ErrorOperation("Invalid input for product id!");
             }
         }
     }
@@ -608,15 +619,15 @@ public class AdminManager
                     if (products[i].Id == productid)
                     {
                         productService.Remove(productid);
-                        Console.WriteLine($"{products[i].Name} is successfully removed!");
+                        SuccessOperation($"{products[i].Name} is successfully removed!");
                         return;
                     }
                 }
-                Console.WriteLine("Invalid product id!");
+                ErrorOperation("Invalid product id!");
             }
             else
             {
-                Console.WriteLine("Invalid input for product id!");
+                ErrorOperation("Invalid input for product id!");
 
             }
 

@@ -43,7 +43,7 @@ public partial class Program
                     if (user != null)
                     {
                         var status = user.Role;
-                        Console.WriteLine($"Welcome {status} {user.Name}");
+                        SuccessOperation($"Welcome {status} {user.Name}");
                         userId = user.Id;
                         isLoggedIn = true;
                         isexit = false;
@@ -106,7 +106,7 @@ public partial class Program
                                         break;
 
                                     default:
-                                        Console.WriteLine("Invalid command!");
+                                        ErrorOperation("Invalid command!");
                                         break;
                                 }
                                 if (!isLoggedIn)
@@ -165,7 +165,7 @@ public partial class Program
                                         isexit=true;
                                         break;
                                     default:
-                                        Console.WriteLine("Invalid command!");
+                                        ErrorOperation("Invalid command!");
                                         break;
                                 }
                                 if (!isLoggedIn)
@@ -177,16 +177,28 @@ public partial class Program
                     }
                     else
                     {
-                        Console.WriteLine("Invalid username or password!");
+                        ErrorOperation("Invalid username or password!");
                     }
                 }
                 else
                 {
-                    Console.WriteLine("Invalid username or password!");
+                    ErrorOperation("Invalid username or password!");
                 }
             }
             
         }
+    }
+    static void SuccessOperation(string message)
+    {
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.WriteLine(message);
+        Console.ResetColor();
+    }
+    static void ErrorOperation(string message)
+    {
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine(message);
+        Console.ResetColor();
     }
 
 }

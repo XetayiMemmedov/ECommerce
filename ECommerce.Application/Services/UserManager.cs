@@ -36,7 +36,7 @@ namespace ECommerce.Application.Services
 
             return userDto;
         }
-
+        
         public List<UserDto> GetAll(Expression<Func<User, bool>>? predicate = null, bool asNoTracking = false)
         {
             var users = _repository.GetAll(predicate, asNoTracking);
