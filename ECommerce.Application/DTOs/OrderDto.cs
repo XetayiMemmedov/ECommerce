@@ -52,7 +52,7 @@ public class OrderCreateDto
     public DateTime OrderDate { get; set; } = DateTime.Now;
     public int Quantity { get; set; }
     public StatusType OrderStatus { get; set; }= StatusType.Pending;
-    public DateTime DeliveryDate { get; set; }
+    public DateTime DeliveryDate { get; set; } = DateTime.Now.AddDays(10);
     public decimal TotalAmount { get; set; }
    
     

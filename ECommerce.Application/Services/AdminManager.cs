@@ -1,19 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Net.Http.Headers;
-using System.Security.Principal;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AutoMapper;
 using ECommerce.Application.DTOs;
-using ECommerce.Application.Extensions;
 using ECommerce.Application.Interfaces;
 using ECommerce.Domain.Entities;
 using ECommerce.Domain.Interfaces;
 using ECommerce.Infrastructure.EfCore;
 using ECommerce.Infrastructure.EfCore.Context;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 namespace ECommerce.Application.Services;
@@ -28,6 +20,7 @@ public class AdminManager
     private readonly IOrderService orderService;
     private readonly IUserRepository userRepository;
     private readonly IUserService userService;
+    private readonly IMapper _mapper;
     public AdminManager()
     {
         AppDbContext appDbContext = new AppDbContext();
@@ -43,6 +36,10 @@ public class AdminManager
         userRepository = new UserRepository(appDbContext);
         userService = new UserManager(userRepository);
         RegisterCommands();
+    }
+    public AdminManager(IMapper mapper)
+    {
+        _mapper = mapper;
     }
     public Dictionary<int, Action> commands = new Dictionary<int, Action>();
 
@@ -97,7 +94,9 @@ public class AdminManager
         Console.WriteLine();
         Console.WriteLine(new string('-', 80));
         Console.WriteLine($"{"Id",-5}{"Product name",-30}{"Price",-10}{"Category",-30}{"FeedBack",-12}");
-        foreach (var product in productService.GetAll())
+        foreach (var product in productService.GetAll(
+            include:query=>query.Include(p=>p.Category), 
+            orderBy: query=> query.OrderBy(p=>p.Id)))
         {
             Console.WriteLine(); Console.WriteLine($"{product.Id,-5}{product.Name,-30}{product.Price,-10}{product.CategoryName,-30}{product.FeedBack,-12}");
         }
@@ -123,7 +122,7 @@ public class AdminManager
             {
                 StatusType status = (StatusType)statusnumber;
 
-                var orders = orderService.GetAll(o => o.OrderStatus == status);
+                var orders = orderService.GetAll(predicate: o => o.OrderStatus == status);
 
                 if (orders != null && orders.Any())
                 {
@@ -158,7 +157,7 @@ public class AdminManager
                                     foreach (var item in orders)
                                     {
                                         item.OrderStatus = status;
-                                        var updatedto = MapExtensions.ToOrderUpdateDto(item);
+                                        var updatedto = _mapper.Map<OrderUpdateDto>(item);
                                         orderService.Update(updatedto);
                                     }
                                     MessageHelper.SuccessOperation($"Status of all the given orders are changed to {status}.");
@@ -171,7 +170,7 @@ public class AdminManager
                                         if (item.Id == confirmationnumber)
                                         {
                                             item.OrderStatus = status;
-                                            var updatedto = MapExtensions.ToOrderUpdateDto(item);
+                                            var updatedto = _mapper.Map<OrderUpdateDto>(item);
                                             orderService.Update(updatedto);
                                             isExist = true;
                                             MessageHelper.SuccessOperation($"The order with ID {item.Id} has been updated to {status}!");
@@ -237,8 +236,8 @@ public class AdminManager
             string password;
             while (true)
             {
-                password = userService.GetPasswordInput("Enter Password:");
-                string cpassword = userService.GetPasswordInput("Confirm Password:");
+                password = MessageHelper.GetPasswordInput("Enter Password:");
+                string cpassword = MessageHelper.GetPasswordInput("Confirm Password:");
                 if (password != cpassword)
                 {
                     MessageHelper.ErrorOperation("Password does not match!");
@@ -294,8 +293,8 @@ public class AdminManager
                         string password;
                         while (true)
                         {
-                            password = userService.GetPasswordInput("Enter Password:");
-                            string cpassword = userService.GetPasswordInput("Confirm Password:");
+                            password = MessageHelper.GetPasswordInput("Enter Password:");
+                            string cpassword = MessageHelper.GetPasswordInput("Confirm Password:");
                             if (password != cpassword)
                             {
                                 MessageHelper.ErrorOperation("Password does not match!");
@@ -514,7 +513,7 @@ public class AdminManager
 
     public void UpdateProduct()
     {
-        var products = productService.GetAll().ToList();
+        var products = productService.GetAll(include: query=>query.Include(p=>p.Category), orderBy: query=>query.OrderBy(p=>p.Id)).ToList();
         foreach (var product in products)
         {
             Console.WriteLine($"{product.Id}.{product.Name} {product.Price} {product.CategoryName}");

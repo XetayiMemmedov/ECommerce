@@ -1,5 +1,4 @@
-﻿
-using ECommerce.Application.Services;
+﻿using ECommerce.Application.Services;
 using ECommerce.Domain.Entities;
 using ECommerce.Infrastructure.EfCore;
 using ECommerce.Infrastructure.EfCore.Context;
@@ -27,7 +26,7 @@ public partial class Program
             {
                 Console.Write("Enter UserName:");
                 string? username = Console.ReadLine();
-                string password = userService.GetPasswordInput("Enter Password:");
+                string password = MessageHelper.GetPasswordInput("Enter Password:");
 
                 if (!username.IsNullOrEmpty() && !password.IsNullOrEmpty())
                 {
